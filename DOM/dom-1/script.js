@@ -8,7 +8,8 @@ newElement.textContent = 'newDiv';
 //newELement
 
 //Функция prepend(аналог JQ, насколько понял)
-  let setElement = parentDiv.firstChild;
+let prepend = (parentDiv, newElem) => {
+    setElement = parentDiv.firstChild;
     parentDiv.insertBefore(newElem, setElement);
 }; // prepend. (в ДЗ-2 превратить в рекурсивную)
 
