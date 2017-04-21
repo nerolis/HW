@@ -10,4 +10,4 @@ function createClub(age){
   }
 
   console.log(clubEnter[18] ('Enter'));
-  console.log(clubEnter[17] ('Go away'));
+  console.log(clubEnter[17] ('Go away, too young'));
