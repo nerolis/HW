@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<body>
+    <a id='switch'>Show/hide document ready msg</a>
+    <div id="message">Loading...</div>
+    <a href='Contacts.html'>Contacts</a>
+    <a href='About.html'>About</a>
+    <div id='clickOnLink'>Click on link</div>
+    <div id='url'></div>
+       <div class='win'>
+           <p id='test'>An text on grey background</p>
+           
+           <blockquote>
+               <p>Not red</p>
+               <p>Click to make them yellow</p>
+           </blockquote>
+           
+           <p>Red</p>
+            </div>
+            <div>
+           <ul>
+                <li>Blue</li>
+                <li>Blue</li>
+                <li class='current'>Current</li>
+                <li>Red</li>
+           </ul>
+               <button class="test2">Click to null the props of list </button>
+           </div>
+       
+        <script>
+        // Изменяем(добавляем) текст в '#message' при загрузке документ.
+        // алсо, изменяем стиль элемента напрямую через метод .css. Не рекомендуется.
+        // И, кстати, проще через коллекцию $('#ID').html('').css('color', 'red'), вроде как расширяет коллекцию.
+        // А ещё можно через let $message = $('#message') сохранить коллекцию в переменную.
+        // вообще как-то непонятна. 
+        // В любом случае, судя по всему, все юзаютт .addClass() и .removeClass() для добавления/удаления стилей.
+        $(document).ready(function() {
+          $('#message').html('Document ready!')
+            //$('#message').css('color', 'red')
+              $('#message').addClass('ready');});
+             //где реди - селектор css
+        //-----------------------------------------
+        // Показываем/скрываем сообщение
+        $('#switch').on('click', function() {
+         $('#message').toggle()});
+        //-----------------------------------------
+        //Вывести ардес нажатой ссылки в блок c '#url'
+        //#INFO: $(this) для того, чтоб достать до .attr и получить href
+        $('a').on('click', function(e) {
+         $('#url').html($(this).attr('href'))
+         event.preventDefault()});
+        //------------------------------------------
+        // Category: Traversing
+        // Parent: .parent(), .parents() .parentsUntil(), .closest()
+        // .find()
+        // Child: .children()
+        // Siblings: .siblings(), next(), .prev(), nextAll(), prevAll()
+        // #test(id) > parent(div) > добавляем(.css), серый бекграунд
+        $('#test').parent().css('background', '#ccc');
+        // Цвет шрифта для чайлдрен элементам P внутри класса .win 
+        // blockquote остается без красного, потому что он хоть и внутри .win, но не является дочерним p
+        $('.win').children('p').css('color', '#f00');
+        //А теперь используя .find всем потомкам p с классом .шин. Но, но только при клике, ибо надо видеть! Красиво, интерактив. Шучу, только >Not red станет красным
+        // потому что он единственный, кто остался не красным! А стоп, можно покрасить в желтый! Во, другое дело.
+          $win = $('.win'); // Это какая-то невероятная штука! Юзаем переменную(коллекцию) для удобства, хотя пример такой себе, конечно. #TODO ОБЯЗАТЕЛЬНО ЗАПОМНИТЬ
+           $win.on('click', function(e) {
+            $('.win').find('p').css('color', 'yellow')});
+        //----------------------------------------------
+        // Зададим красный цвет всем сиблингам после элемента с классом .current и синий всем, кто перед ним
+        // коллекцию через переменную, руки не отрубать плз
+        $current = $('.current'); // Здесь, конечно, проще было через просто через $('.current).NextAll и prevAll(), но захотелось ещё раз проверить
+         $current.nextAll().css('color', '#f00');
+          $current.prevAll().css('color', '#00f');
+       //-----------------------------------------
+       // Тестим модуль
+       $.fn.deletetag = function() {
+           $(this).each(function (i, node) {
+            var $node = $(node);
+            $node.after($node.html()) .remove();
+           });
+       };
+       // Вызываем по клику на кнопку, удаляем свойства из li
+       $('.test2').on('click', function(e) {
+          $('li') .deletetag()
+       });
+    </script>
+    <style>
+        .ready{
+            color: green
+            };
+        ul{
+            
+        }
+        .test2 {
+            font-style: bold
+        }
+    </style>
+</body>
+</html>
