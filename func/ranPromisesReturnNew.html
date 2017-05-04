@@ -1,0 +1,105 @@
+<!DOCTYPE
+<html>
+    <head>
+        <meta charset="utf-8">
+    </meta>
+    </head>
+    <body>
+    </body>
+    <script>
+    
+    
+    let url1 = 'https://en.touhouwiki.net/images/thumb/6/64/Ran.png/200px-Ran.png';
+    let url2 = 'http://vignette2.wikia.nocookie.net/touhou/images/1/13/Ran_Yakumo.png/revision/latest?cb=20120511163150';
+    let url3 = 'https://s-media-cache-ak0.pinimg.com/236x/8a/a4/b9/8aa4b98c38a75090edada166bdc50097.jpg';
+    let url4 = 'https://s-media-cache-ak0.pinimg.com/originals/87/64/e4/8764e4b766903bc4bc1a8c260c007212.jpg';
+    function loadImage(url) { // Теперь создаем функцию, она будет возвращать промис.
+                             // Задаем ей параметр - путь картинки.
+        return new Promise((resolve, reject) => {
+            
+     // Внутри есть resolve, reject, или succes/reject, как угодно вообще. Суть в последовательности.
+      
+      let image = new Image();
+      document.body.appendChild(image);
+      
+      image.src = url;
+      image.addEventListener('load', () => { // подписываемся на лоад, когда будет загружена, вызываем резолв
+          resolve();                          // состояние - pending/waiting, ожидаем, либо будет загружена, либо нет.
+      });                                        //- fullfiled/succes/resolve - онли успешное выполнение.
+                                                // reject - ну тут всё ясно. Выполнено с ошибкой.
+      image.addEventListener('error', () => { // Всё то же самое, подписываемся. В случае ошибки, делаем режект. 
+          reject(); 
+       });
+     });
+    }
+    // let image = new Image();    
+    // document.body.appendChild(image);
+    // image.src = url1;
+    // console.log('code after image.src = url1') // Вывод будет даже во время прогрузки картинки.
+    // image.addEventListener('load', () => { // А так можно повесить событие на полную загрузку.
+    //     console.log('First Ran loaded');
+    // //---------------------------------------
+    //     let image = new Image();
+    // document.body.appendChild(image);
+    // image.src = url2;
+    // image.addEventListener('load', () => { // Вторая
+    //     console.log('Second Ran loaded');
+    //     //--------------
+    //             let image = new Image();
+    // document.body.appendChild(image);
+    // image.src = url3;
+    // image.addEventListener('load', () => { // И это выходит полная хаута.
+    //     console.log('Third Ran loaded');
+    //         });
+    //     });
+    //});
+
+    // И вот здесь надо разобрать промисы.
+    // Вызываем функцию конструктор(object?)
+    // Вообще, надо понять и принять саму суть промисов и воспринимать функцию словно сущность, что принимает(и отдает?) две штуки
+    // и вот ты работай с ними как хочешь. А её дело - ну, обработать эти аргументы в случае успеха, или не успеха.
+    // То есть, мы просто юзаем резолв и реджект, и вставляем где нам нужно. 
+    
+    let promise = loadImage(url1); // Как использовать всю эту хауту. Создаем, в аргументах юзаем.
+                                      // если подробнее, то в loadImage(url)  в данном случае будет url1, так как мы его сами добавили через чуть выше.
+    promise.then( // И тут мы переходим к .then, который внутри промиса. Объекта, конструктора.
+
+    () => { // Когда какой-то результат у промиса будет с успехом/ошибкой, тогда выполнить
+    console.log('Картинка 1 загружена успешно'); // У .then есть две функции. Первым параметром, выполнено когда промис будет выполнен успешно
+    return loadImage(url2); // через ретёрны загружаем вторую картинку
+    }
+    ,
+    () => {
+    console.log('Картинка 1 загружена с ошибкой'); // Вторая только тогда, когда промис будет выполнен с ошибкой
+    }
+    ).then(        //здесь копируем и загружаем 3
+     () => { // Когда какой-то результат у промиса будет с успехом/ошибкой, тогда выполнить
+    console.log('Картинка 2 загружена успешно'); // У .then есть две функции. Первым параметром, выполнено когда промис будет выполнен успешно
+    return loadImage(url3);
+    }
+    ,
+    () => {
+    console.log('Картинка 2 загружена с ошибкой');
+     } 
+    ).then( // готово
+     () => {
+     console.log('Картинка 3 загружена успешно');
+     return loadImage(url4)
+    }
+    ,
+     () => {
+    console.log('Картинка 3 загружена с ошибкой');
+     } 
+    ).then(
+         () => {
+     console.log('Картинка 4 загружена успешно');
+    }
+    ,
+     () => {
+    console.log('Картинка 4 загружена с ошибкой');
+     }
+    )
+    
+                
+    </script>
+</html>
